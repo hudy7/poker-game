@@ -1,4 +1,10 @@
+'''
+This class could be built out to print out actual cards.
+Also debating this turning into the Deck class and giving it the ability to
+generate a deck.
+'''
 class Card:
+
     def __init__(self, val, suit):
         self.val = val
         self.suit = suit
@@ -17,9 +23,4 @@ class Card:
             13 : 'K',
             14 : 'A'
         }
-        #self.num_val = self.evaluate_card()
         self.str_val = self.card_values[self.val]
-
-
-    def evaluate_card(self):
-        return self.card_values[self.val]

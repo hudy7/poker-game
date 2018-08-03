@@ -1,6 +1,7 @@
 import card
-        
+
 class Hand:
+    
     def __init__(self, cards):
         self.cards = cards
         self.scores = {
@@ -20,7 +21,15 @@ class Hand:
         self.evaluation   = self.evaluate_hand()
         self.score        = self.scores[self.evaluation]
 
+    '''
+    Planning on moving setup_value_counts and setup_suit_counts into one operation.
+    value_counts, suit_counts = self.setup_counts()
+    setup_counts() returns 2 dictionaries
+    '''
 
+    '''
+    O(n) --> n = len(cards) --> max(5)
+    '''
     def setup_value_counts(self):
         d = {}
         for c in self.cards:
@@ -31,6 +40,9 @@ class Hand:
         return d
 
 
+    '''
+    O(n) --> n = len(cards) --> max(5)
+    '''
     def setup_suit_counts(self):
         d = {}
         for c in self.cards:
@@ -41,14 +53,19 @@ class Hand:
         return d
 
 
+    '''
+    O(n) --> n = len(cards) --> max(5)
+    '''
     def __str__(self):
-        # cards = []
-        # for c in self.cards:
-        #    print(c.str_val + c.suit.upper(), end=" ")
         return ' '.join((c.str_val + c.suit.upper()) for c in self.cards)
 
-    def evaluate_hand(self):
 
+    '''
+    Main logic
+    O(n log n) --> worst case - when you have to sort in isStraight()
+    O(n) --> best case - all other operations
+    '''
+    def evaluate_hand(self):
         if self.isStraight() and self.isFlush():
             if self.isRoyalStraight():
                 return 'royal flush'
@@ -81,10 +98,17 @@ class Hand:
     '''
     Evaluators
     '''
+
+    '''
+    O(n) -> n = len(cards) --> max(5)
+    '''
     def isRoyalStraight(self):
         return max(card.val for card in self.cards) == 14
 
 
+    '''
+    O(n) -> n = len(self.value_counts)
+    '''
     def isNumOfKind(self, n):
         #for card in cards
         for val in self.value_counts.values():
@@ -93,6 +117,9 @@ class Hand:
         return False
 
 
+    '''
+    O(n) -> n = len(cards) --> max(5)
+    '''
     def isFlush(self):
         suits = set()
         for card in self.cards:
@@ -100,6 +127,9 @@ class Hand:
         return len(suits) == 1
 
 
+    '''
+    O(n log n) -> sorted operation
+    '''
     def isStraight(self):
         sorted_cards = sorted(self.cards, key=lambda card: card.val)
 
@@ -110,6 +140,9 @@ class Hand:
         return True
 
 
+    '''
+    O(n) -> n = len(self.value_counts)
+    '''
     def isTwoPair(self):
         twos_count = 0
         for val in self.value_counts.values():
